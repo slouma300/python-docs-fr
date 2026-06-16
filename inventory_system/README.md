@@ -18,7 +18,7 @@ It uses Python's standard library, SQLite, and a small browser UI.
 From the repository root:
 
 ```bash
-python inventory_system/app.py --host 127.0.0.1 --port 8000
+python3 inventory_system/app.py --host 127.0.0.1 --port 8000
 ```
 
 Open:
@@ -36,7 +36,7 @@ inventory_system/inventory.db
 You can choose another database path:
 
 ```bash
-python inventory_system/app.py --db /tmp/inventory.db
+python3 inventory_system/app.py --db /tmp/inventory.db
 ```
 
 ## Barcode scanning
@@ -110,5 +110,5 @@ GET /api/movements?limit=50
 ## Tests
 
 ```bash
-python -m unittest discover -s inventory_system/tests
+python3 -m unittest discover -s inventory_system/tests
 ```
