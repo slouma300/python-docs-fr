@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inventory Stock System</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Vercel-ready inventory</p>
+        <h1>Stock by location</h1>
+        <p>
+          Receive stock, remove stock, transfer between locations, and scan
+          barcodes. This version is ready for Vercel and prepared for a later
+          Supabase database connection.
+        </p>
+      </div>
+      <button id="refreshButton" type="button">Refresh stock</button>
+    </header>
+
+    <main>
+      <section class="panel notice">
+        <div>
+          <h2>Storage mode</h2>
+          <p>
+            Right now this Vercel app saves data in this browser only. That is
+            good for demos. When Supabase is connected later, inventory will be
+            saved in the cloud and shared across devices.
+          </p>
+        </div>
+        <button id="seedDemoButton" type="button">Load demo stock</button>
+        <button id="clearDataButton" type="button" class="secondary">Clear browser data</button>
+      </section>
+
+      <section class="panel scanner">
+        <div>
+          <h2>Barcode scanner</h2>
+          <p>
+            Click the barcode field and scan with a USB/Bluetooth scanner. If
+            your browser supports the Barcode Detection API, you can also use
+            the camera scanner below.
+          </p>
+        </div>
+        <div class="scanner-actions">
+          <input id="globalBarcode" autocomplete="off" placeholder="Scan or type barcode">
+          <button id="scanLookupButton" type="button">Lookup</button>
+          <button id="cameraButton" type="button">Start camera scan</button>
+        </div>
+        <video id="cameraPreview" class="hidden" muted playsinline></video>
+        <div id="scanResult" class="message" role="status"></div>
+      </section>
+
+      <section class="grid">
+        <form id="stockInForm" class="panel card">
+          <h2>Stock in</h2>
+          <label>
+            Barcode
+            <input name="barcode" autocomplete="off" required>
+          </label>
+          <label>
+            Product name
+            <input name="product_name" placeholder="Optional for existing barcode">
+          </label>
+          <label>
+            Location
+            <input name="location" placeholder="Main warehouse" required>
+          </label>
+          <label>
+            Quantity
+            <input name="quantity" type="number" min="1" value="1" required>
+          </label>
+          <label>
+            Note
+            <input name="note" placeholder="Supplier, PO, reason">
+          </label>
+          <button type="submit">Add stock</button>
+        </form>
+
+        <form id="stockOutForm" class="panel card">
+          <h2>Stock out</h2>
+          <label>
+            Barcode
+            <input name="barcode" autocomplete="off" required>
+          </label>
+          <label>
+            Location
+            <input name="location" required>
+          </label>
+          <label>
+            Quantity
+            <input name="quantity" type="number" min="1" value="1" required>
+          </label>
+          <label>
+            Note
+            <input name="note" placeholder="Sale, damage, adjustment">
+          </label>
+          <button type="submit">Remove stock</button>
+        </form>
+
+        <form id="transferForm" class="panel card">
+          <h2>Transfer location</h2>
+          <label>
+            Barcode
+            <input name="barcode" autocomplete="off" required>
+          </label>
+          <label>
+            From location
+            <input name="from_location" required>
+          </label>
+          <label>
+            To location
+            <input name="to_location" required>
+          </label>
+          <label>
+            Quantity
+            <input name="quantity" type="number" min="1" value="1" required>
+          </label>
+          <label>
+            Note
+            <input name="note" placeholder="Transfer reason">
+          </label>
+          <button type="submit">Transfer stock</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <h2>Current stock</h2>
+          <span id="stockCount"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Barcode</th>
+                <th>Product</th>
+                <th>Location</th>
+                <th class="number">Quantity</th>
+              </tr>
+            </thead>
+            <tbody id="stockTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <h2>Movement history</h2>
+          <span>Latest 50</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Barcode</th>
+                <th>Product</th>
+                <th>From</th>
+                <th>To</th>
+                <th class="number">Qty</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody id="movementTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <template id="emptyRowTemplate">
+      <tr>
+        <td colspan="8" class="empty">No records yet.</td>
+      </tr>
+    </template>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

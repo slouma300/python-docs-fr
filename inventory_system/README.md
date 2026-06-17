@@ -3,6 +3,12 @@
 This is a standalone stock management app added under `inventory_system/`.
 It uses Python's standard library, SQLite, and a small browser UI.
 
+There are now two versions:
+
+- `app.py` + `static/` - local Python/SQLite version
+- `vercel_app/` - Vercel-ready static version, using browser storage until
+  Supabase is connected later
+
 ## Features
 
 - Stock in to a named location
@@ -111,4 +117,20 @@ GET /api/movements?limit=50
 
 ```bash
 python3 -m unittest discover -s inventory_system/tests
+```
+
+## Vercel version
+
+The Vercel-ready app is here:
+
+```text
+inventory_system/vercel_app
+```
+
+Deploy that folder as the Vercel project root. It stores data in the browser
+for now, which is good for demos and testing. For shared inventory across
+devices, connect Supabase later using:
+
+```text
+inventory_system/supabase/schema.sql
 ```
